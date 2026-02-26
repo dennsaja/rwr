@@ -1,0 +1,15 @@
+{
+  "name": "mp4-to-mp3",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "webpack"
+  },
+  "dependencies": {
+    "@ffmpeg/ffmpeg": "^0.12.6"
+  },
+  "devDependencies": {
+    "webpack": "^5.0.0",
+    "webpack-cli": "^5.0.0",
+    "html-webpack-plugin": "^5.5.0"
+  }
+}
