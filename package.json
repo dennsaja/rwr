@@ -5,7 +5,8 @@
     "build": "webpack"
   },
   "dependencies": {
-    "@ffmpeg/ffmpeg": "0.12.15"
+    "@ffmpeg/ffmpeg": "0.12.15",
+    "@ffmpeg/util": "0.12.2"
   },
   "devDependencies": {
     "webpack": "^5.88.0",
