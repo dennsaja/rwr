@@ -1,24 +1,40 @@
-import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
+import { FFmpeg } from "@ffmpeg/ffmpeg";
+import { fetchFile } from "@ffmpeg/util";
 
-const ffmpeg = createFFmpeg({ log: true });
-
+const ffmpeg = new FFmpeg();
 const upload = document.getElementById("upload");
 const convertBtn = document.getElementById("convert");
 const download = document.getElementById("download");
 
 convertBtn.addEventListener("click", async () => {
-  if (!upload.files.length) return alert("Upload file dulu!");
+  if (!upload.files.length) {
+    alert("Upload file dulu!");
+    return;
+  }
 
   convertBtn.innerText = "Loading FFmpeg...";
-  await ffmpeg.load();
+  
+  if (!ffmpeg.loaded) {
+    await ffmpeg.load();
+  }
 
   const file = upload.files[0];
-  ffmpeg.FS("writeFile", "input.mp4", await fetchFile(file));
 
   convertBtn.innerText = "Converting...";
-  await ffmpeg.run("-i", "input.mp4", "-q:a", "0", "-map", "a", "output.mp3");
 
-  const data = ffmpeg.FS("readFile", "output.mp3");
+  await ffmpeg.writeFile("input.mp4", await fetchFile(file));
+
+  await ffmpeg.exec([
+    "-i",
+    "input.mp4",
+    "-q:a",
+    "0",
+    "-map",
+    "a",
+    "output.mp3",
+  ]);
+
+  const data = await ffmpeg.readFile("output.mp3");
 
   const url = URL.createObjectURL(
     new Blob([data.buffer], { type: "audio/mp3" })
